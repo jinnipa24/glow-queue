@@ -73,7 +73,7 @@ nav button.on{background:var(--soft);color:var(--pri)}
 <nav id="nav"></nav>
 <script>
 /* ===== ตั้งค่า (แก้ตรงนี้) ===== */
-const CFG={API:"https://script.google.com/macros/s/AKfycbx9GyFVrZt5T2emXLtkMIHRjTe-o7hKJIV0V8bi4FdiBppEppXVQDRN5XgJ0N-oshtS/exec",LIFF_ID:"2012798185-odEpLNeP",OA_URL:"https://lin.ee/ohevx2F",DEPOSIT:100,PROMPTPAY:"0804435003",SHOP:"Glow Queue"};
+const CFG={API:"https://script.google.com/macros/library/d/1S1nVJ02LRnkLrlVRNWFoQbrpWS1FcOFrUTM0vUYsVDaGujx2sovbn5ur/3",LIFF_ID:"2012798185-odEpLNeP",OA_URL:"https://lin.ee/ohevx2F",DEPOSIT:100,PROMPTPAY:"1234567890",SHOP:"Glow Queue"};
 const STAFF=[{n:"พี่แนน",c:"hair",r:"ตัดผม ย้อมสี"},{n:"พี่ต้น",c:"hair",r:"ดัด ยืด ทรีทเม้นท์"},{n:"พี่มิ้นท์",c:"nail",r:"ทาสีเจล เพ้นท์"},{n:"พี่พลอย",c:"nail",r:"ต่อเล็บ โพลี่เจล"}];
 /* ===== ราคาบริการ ===== */
 const RAW={nail:{"ทาสีเจล":[["ทาสีเจลมือ / เท้า",250],["ทา 3 สีขึ้นไป (เพิ่ม)",50,"+"],["สีไซรัป / เยลลี่ / นู้ดสุขภาพดี",300],["สีกลิตเตอร์ / สีแฟลช",350],["สีลูกแก้ว",400],["สีขัดผง",450],["ออมเบย์",500],["เฟร้นปลาย",550],["เพ้นท์",400]],"ล้างสี / สปา":[["ล้างสี",100],["ถอด PVC",150],["ถอดเล็บเสริม / โพลี่ / เจลต่อ",200],["ถอดเล็บอะคิลิค",250],["ตัดเล็บ ตัดหนัง",150]],"ต่อเล็บ":[["ต่อ PVC ชิดโคน",200],["ต่อ PVC เว้นโคน",300],["เสริมหน้าเล็บ Overlay",450],["เติมโคน Overlay",200],["ต่อโพลี่เจล",800],["เติมโคนโพลี่เจล",500],["ต่อเจล",1000],["เติมโคนเจล",700]]},
@@ -89,13 +89,8 @@ const st={tab:"book",cat:"nail",cart:[],view:"list",me:null,staff:null,date:null
 /* ===== API (ถ้ายังไม่ใส่ CFG.API จะใช้ข้อมูลทดลองในเครื่อง) ===== */
 async function api(body,get){
  if(!CFG.API)return mock(body,get);
- const ac=new AbortController(),tm=setTimeout(()=>ac.abort(),25000);
- try{
-  const r=get?await fetch(CFG.API+"?"+new URLSearchParams(get),{signal:ac.signal}):await fetch(CFG.API,{method:"POST",body:JSON.stringify(body),signal:ac.signal});
-  const t=await r.text();
-  try{return JSON.parse(t)}catch(e){return{ok:false,error:"bad",detail:"เซิร์ฟเวอร์ตอบกลับไม่ใช่ข้อมูล: "+t.replace(/<[^>]*>/g," ").replace(/\s+/g," ").slice(0,160)}}
- }catch(e){return{ok:false,error:"net",detail:e.name==="AbortError"?"รอนานเกิน 25 วินาที":"เชื่อมต่อไม่ได้ ("+e.message+")"}}
- finally{clearTimeout(tm)}}
+ const r=get?await fetch(CFG.API+"?"+new URLSearchParams(get)):await fetch(CFG.API,{method:"POST",body:JSON.stringify(body)});
+ return r.json()}
 function mock(b,g){
  const L=ls.get("gq_mock",[]);
  if(g?.action==="busy")return{busy:L.filter(r=>r.date===g.date&&r.status!=="noshow").map(r=>r.staff+"|"+r.time)};
@@ -184,9 +179,7 @@ async function act(a,v){
   const ph=st.phone.replace(/\D/g,""),nm=(st.name||st.me?.displayName||"").trim();
   if(!nm||ph.length<9){st.err="กรอกชื่อและเบอร์โทรให้ครบก่อนยืนยัน";return R()}
   const o=total(),b={action:"create",date:st.date,time:st.time,staff:st.staff,services:chosen().map(x=>x.n).join(", "),price:o.t,deposit:CFG.DEPOSIT,name:nm,phone:ph,lineUserId:st.me?.userId||"",img:st.img||""};
-  if(st.sending)return;st.sending=true;st.err="กำลังบันทึกคิว กรุณารอสักครู่...";R();
-  const r=await api(b);st.sending=false;
-  if(!r.ok){st.err=r.error==="taken"?"คิวนี้เพิ่งถูกจองไป เลือกเวลาอื่นได้เลย":"จองไม่สำเร็จ: "+(r.detail||r.error||"ไม่ทราบสาเหตุ");R();if(r.error==="taken")await loadBusy();return}
+  const r=await api(b);if(!r.ok){st.err=r.error==="taken"?"คิวนี้เพิ่งถูกจองไป เลือกเวลาอื่นได้เลย":"จองไม่สำเร็จ ลองใหม่อีกครั้ง";await loadBusy();return}
   st.phone=ph;ls.set("gq_phone",ph);st.done=b;st.err="";st.view="ok";st.cart=[];R();scrollTo(0,0)}
  else if(a==="lookup"){st.phone=st.phone.replace(/\D/g,"");ls.set("gq_phone",st.phone);st.mine=(await api(null,{action:"me",phone:st.phone})).bookings;R()}
  else if(a==="pinGo")await refresh();
