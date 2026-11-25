@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Glow Queue – จองคิวร้านตัดผม ทำเล็บ</title>
-<link href="https://fonts.googleapis.com/css2?family=Anuphan:wght@400;500;600&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Anuphan:wght@400;500;600&family=Plus+Jakarta+Sans:wght@600;700;800&family=Playfair+Display:ital,wght@0,600;1,500&display=swap" rel="stylesheet">
 <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
 <style>
 :root{--pri:#5b3df5;--pri2:#9a7bff;--soft:#f1edff;--ink:#17132b;--mute:#6c6880;--bg:#faf9ff;--card:#fff;--line:#ebe7fa;--ok:#1f9d6b;--warn:#e0662f;--shadow:0 10px 30px rgba(91,61,245,.10);
@@ -65,6 +65,34 @@ nav button.on{background:var(--soft);color:var(--pri)}
 .row img{width:34px;height:34px;border-radius:8px;object-fit:cover;vertical-align:middle;margin-right:6px}
 .banner{background:#fff4d6;border-radius:14px;padding:10px 14px;font-size:13px;margin-bottom:12px}
 .ok{text-align:center;padding:26px 16px}.ok .big{font-size:22px;margin:6px 0}
+
+/* ===== Glow redesign ===== */
+:root{--pri:#b5485e;--pri2:#e39aa6;--soft:#fbeef0;--ink:#2a1a1f;--mute:#85707a;--bg:#fdf8f5;--line:#f1e3e2;--gold:#c79a5b;--shadow:0 14px 40px -12px rgba(120,40,60,.18)}
+body{background:radial-gradient(1200px 500px at 50% -200px,#fbe4e6,transparent),var(--bg)}
+h1,h2,.hero h2,.ok .big{font-family:"Playfair Display",Anuphan,serif;font-weight:600;letter-spacing:-.01em}
+.hero{position:relative;overflow:hidden;min-height:260px;display:flex;flex-direction:column;justify-content:flex-end;padding:24px;border-radius:28px;background:#3a1d26 url(img/hero.jpg) center/cover;box-shadow:var(--shadow)}
+.hero:before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(42,20,28,0) 20%,rgba(42,20,28,.85))}
+.hero>*{position:relative}.hero h2{font-size:30px}
+.hero .eb{display:inline-block;align-self:flex-start;background:rgba(255,255,255,.18);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.35);border-radius:99px;padding:4px 12px;font-size:12px;letter-spacing:.08em;margin-bottom:10px}
+.cats{gap:12px}.cat{flex:1}
+.cat span{width:100%;height:92px;border-radius:20px;background-size:cover;background-position:center;position:relative;overflow:hidden;font-size:0;border:2px solid transparent;box-shadow:var(--shadow)}
+.cat span:after{content:"";position:absolute;inset:0;background:rgba(42,20,28,.25)}
+.cat.on span{border-color:var(--pri)}.cat.on span:after{background:rgba(181,72,94,.12)}
+.gal{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;padding:4px 2px 10px;margin:0 -2px}
+.gal figure{flex:none;width:150px;margin:0;scroll-snap-align:start}
+.gal img{width:150px;height:190px;object-fit:cover;border-radius:18px;display:block;box-shadow:var(--shadow)}
+.gal figcaption{font-size:13px;color:var(--mute);margin-top:6px}
+.team{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.mem{background:#fff;border:1px solid var(--line);border-radius:20px;overflow:hidden;box-shadow:var(--shadow)}
+.mem img{width:100%;aspect-ratio:1;object-fit:cover;display:block}.mem div{padding:10px 12px}.mem b{display:block}.mem span{font-size:12px;color:var(--mute)}
+.card{border-radius:22px;border-color:var(--line)}
+.add.on,.btn{background:var(--pri)}.btn{border-radius:16px;box-shadow:0 8px 20px -8px rgba(181,72,94,.6)}
+.btn.ghost{box-shadow:none}.btn.line{background:#06c755}
+.stf{border-radius:20px;padding:10px}.stf .av{width:64px;height:64px;border-radius:16px}
+.bar>div{background:linear-gradient(135deg,#2a1a1f,#4a2531);box-shadow:var(--shadow)}
+nav{background:rgba(255,255,255,.85);backdrop-filter:blur(12px)}
+.sec{font-family:"Playfair Display",Anuphan,serif;font-size:20px;font-weight:600}
+.sec small{font-family:Anuphan,sans-serif;font-size:13px;color:var(--mute);font-weight:400;margin-left:6px}
 </style>
 </head>
 <body>
@@ -74,7 +102,8 @@ nav button.on{background:var(--soft);color:var(--pri)}
 <script>
 /* ===== ตั้งค่า (แก้ตรงนี้) ===== */
 const CFG={API:"https://script.google.com/macros/s/AKfycbxRMskk4FYr5vKGQMcbtLb3gtdM90dtCAXmZmopa0IaQW0mpMbo5x2Z9V3PtCUtZgyD/exec",LIFF_ID:"2012798185-odEpLNeP",OA_URL:"https://lin.ee/ohevx2F",DEPOSIT:100,PROMPTPAY:"0804435003",SHOP:"Glow Queue"};
-const STAFF=[{n:"พี่แนน",c:"hair",r:"ตัดผม ย้อมสี"},{n:"พี่ต้น",c:"hair",r:"ดัด ยืด ทรีทเม้นท์"},{n:"พี่มิ้นท์",c:"nail",r:"ทาสีเจล เพ้นท์"},{n:"พี่พลอย",c:"nail",r:"ต่อเล็บ โพลี่เจล"}];
+const STAFF=[{n:"พี่แนน",c:"hair",r:"ตัดผม ย้อมสี",i:"img/s1.jpg"},{n:"พี่ต้น",c:"hair",r:"ดัด ยืด ทรีทเม้นท์",i:"img/s2.jpg"},{n:"พี่มิ้นท์",c:"nail",r:"ทาสีเจล เพ้นท์",i:"img/s3.jpg"},{n:"พี่พลอย",c:"nail",r:"ต่อเล็บ โพลี่เจล",i:"img/s4.jpg"}];
+const GAL={nail:[["img/nail1.jpg","นู้ดชมพู ปลายกลิตเตอร์"],["img/nail2.jpg","เยลลี่แดง เพ้นท์ดอกไม้"]],hair:[["img/hair1.jpg","ไฮไลท์น้ำตาล ลอนสวย"],["img/hair2.jpg","บ็อบตรง เงาสลวย"]]};
 /* ===== ราคาบริการ ===== */
 const RAW={nail:{"ทาสีเจล":[["ทาสีเจลมือ / เท้า",250],["ทา 3 สีขึ้นไป (เพิ่ม)",50,"+"],["สีไซรัป / เยลลี่ / นู้ดสุขภาพดี",300],["สีกลิตเตอร์ / สีแฟลช",350],["สีลูกแก้ว",400],["สีขัดผง",450],["ออมเบย์",500],["เฟร้นปลาย",550],["เพ้นท์",400]],"ล้างสี / สปา":[["ล้างสี",100],["ถอด PVC",150],["ถอดเล็บเสริม / โพลี่ / เจลต่อ",200],["ถอดเล็บอะคิลิค",250],["ตัดเล็บ ตัดหนัง",150]],"ต่อเล็บ":[["ต่อ PVC ชิดโคน",200],["ต่อ PVC เว้นโคน",300],["เสริมหน้าเล็บ Overlay",450],["เติมโคน Overlay",200],["ต่อโพลี่เจล",800],["เติมโคนโพลี่เจล",500],["ต่อเจล",1000],["เติมโคนเจล",700]]},
 hair:{"ทำผม":[["สระ ไดร์ ซอย",200,"s"],["สระ ไดร์ หนีบ",200,"s"],["อบไอน้ำ",500,"s"],["ยืดผมถาวร",1300,"s"],["ดัดแฟชั่น",1000,"s"],["ย้อมสีผม",700,"s"],["ทำสีไฮไลท์",700,"s"],["ทรีทเม้นท์ผม",500,"s"]]}};
@@ -83,6 +112,7 @@ const TIMES=["10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00"];
 const iso=d=>`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
 const DAYS=[...Array(7)].map((_,i)=>{const d=new Date();d.setDate(d.getDate()+i);return{k:iso(d),l:d.toLocaleDateString("th-TH",{weekday:"short",day:"numeric",month:"short"})}});
 const $=s=>document.querySelector(s),esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const thd=d=>{const m=String(d||"").match(/^(\d{4})-(\d\d)-(\d\d)/);return m?new Date(+m[1],m[2]-1,+m[3]).toLocaleDateString("th-TH",{weekday:"short",day:"numeric",month:"short",year:"numeric"}):String(d||"")};
 const money=n=>Number(n).toLocaleString("th-TH");
 const ls={get(k,d){try{return JSON.parse(localStorage.getItem(k))??d}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
 const st={tab:"book",cat:"nail",cart:[],view:"list",me:null,staff:null,date:null,time:null,name:"",phone:ls.get("gq_phone",""),img:null,busy:[],done:null,mine:null,pin:"",admin:null,sel:null,q:"",err:""};
@@ -108,17 +138,19 @@ const initial=n=>esc((n||"?").trim().slice(0,1).toUpperCase());
 function vList(){
  const me=st.me;let h=`<div class="top"><div class="av">${me?.pictureUrl?`<img src="${esc(me.pictureUrl)}" alt="">`:initial(me?.displayName||st.name)}</div><div><h3>สวัสดี${me?" คุณ"+esc(me.displayName):""}</h3><p class="mute">วันนี้อยากดูแลตัวเองด้วยบริการอะไร</p></div>${me?"":`<button class="pill" data-a="liff">เข้าสู่ระบบ LINE</button>`}</div>`;
  if(!CFG.API)h+=`<div class="banner">โหมดทดลอง: ข้อมูลเก็บในเครื่องนี้ ยังไม่เชื่อม Google Sheets และ LINE</div>`;
- h+=`<div class="hero"><h2>จองคิวง่าย<br>มัดจำเพียง ${CFG.DEPOSIT} บาท</h2><p>หักจากค่าบริการวันที่มาใช้บริการ ลืมนัดไม่ต้องกลัว เรามีเตือนผ่าน LINE</p></div>`;
- h+=`<div class="cats"><button class="cat ${st.cat==="nail"?"on":""}" data-a="cat" data-v="nail"><span>💅</span>ทำเล็บ</button><button class="cat ${st.cat==="hair"?"on":""}" data-a="cat" data-v="hair"><span>💇</span>ทำผม</button></div>`;
+ h+=`<div class="hero"><span class="eb">GLOW QUEUE · HAIR &amp; NAIL</span><h2>จองคิวง่าย<br>มัดจำเพียง ${CFG.DEPOSIT} บาท</h2><p>หักจากค่าบริการวันที่มาใช้บริการ ลืมนัดไม่ต้องกลัว เรามีเตือนผ่าน LINE</p></div>`;
+ h+=`<div class="cats"><button class="cat ${st.cat==="nail"?"on":""}" data-a="cat" data-v="nail"><span style="background-image:url(img/nail2.jpg);background-position:center 40%"></span>ทำเล็บ</button><button class="cat ${st.cat==="hair"?"on":""}" data-a="cat" data-v="hair"><span style="background-image:url(img/hair1.jpg)"></span>ทำผม</button></div>`;
  let cur="";const items=ALL.filter(x=>x.c===st.cat);
- h+=`<h3 class="sec">เลือกบริการ (เลือกได้หลายรายการ)</h3>`;
+ h+=`<h3 class="sec">ผลงานของเรา<small>ตัวอย่างงานจริงจากร้าน</small></h3><div class="gal">${GAL[st.cat].concat(GAL[st.cat==="nail"?"hair":"nail"]).map(([s,c])=>`<figure><img src="${s}" alt="${c}" loading="lazy"><figcaption>${c}</figcaption></figure>`).join("")}</div>`;
+ h+=`<h3 class="sec">ช่างของเรา</h3><div class="team">${STAFF.filter(s=>s.c===st.cat).map(s=>`<div class="mem"><img src="${s.i}" alt="${s.n}" loading="lazy"><div><b>${s.n}</b><span>${s.r}</span></div></div>`).join("")}</div>`;
+ h+=`<h3 class="sec">เลือกบริการ<small>เลือกได้หลายรายการ</small></h3>`;
  for(const g of Object.keys(RAW[st.cat])){h+=`<div class="card"><h3 style="font-size:16px;margin-bottom:4px">${g}</h3>`;items.filter(x=>x.g===g).forEach(x=>{const on=st.cart.includes(x.id);h+=`<div class="svc"><div class="n">${x.n}</div><div class="p">${x.t==="+"?"+":x.t==="s"?"เริ่มต้น ":""}฿${money(x.p)}</div><button class="add ${on?"on":""}" aria-label="${on?"เอาออก":"เพิ่ม"} ${esc(x.n)}" aria-pressed="${on}" data-a="add" data-v="${x.id}">${on?"✓":"+"}</button></div>`});h+=`</div>`}
  return h}
 async function loadBusy(){if(!st.date)return;st.busy=(await api(null,{action:"busy",date:st.date})).busy||[];R()}
 function vCo(){
  const sf=STAFF.filter(s=>s.c===st.cat);
  let h=`<button class="pill" data-a="back" style="margin:0 0 12px">← กลับไปเลือกบริการ</button><div class="card"><h3>สรุปบริการ</h3><p class="mute" style="margin:6px 0">${chosen().map(x=>esc(x.n)).join(", ")}</p><p><b>${tl()}</b></p></div>`;
- h+=`<h3 class="sec">เลือกช่าง</h3>`+sf.map(s=>`<button class="stf ${st.staff===s.n?"on":""}" data-a="staff" data-v="${s.n}"><div class="av">${initial(s.n.replace("พี่",""))}</div><div><b>${s.n}</b><br><span class="mute">${s.r}</span></div></button>`).join("");
+ h+=`<h3 class="sec">เลือกช่าง</h3>`+sf.map(s=>`<button class="stf ${st.staff===s.n?"on":""}" data-a="staff" data-v="${s.n}"><div class="av"><img src="${s.i}" alt=""></div><div><b>${s.n}</b><br><span class="mute">${s.r}</span></div></button>`).join("");
  if(st.staff){h+=`<h3 class="sec">เลือกวัน</h3><div class="chips">${DAYS.map(d=>`<button class="chip ${st.date===d.k?"on":""}" data-a="date" data-v="${d.k}">${d.l}</button>`).join("")}</div>`;
   if(st.date)h+=`<h3 class="sec">เลือกเวลา</h3><div class="times">${TIMES.map(t=>`<button class="chip ${st.time===t?"on":""}" ${st.busy.includes(st.staff+"|"+t)?"disabled":""} data-a="time" data-v="${t}">${t}</button>`).join("")}</div><p class="mute" style="margin-top:6px">เวลาที่ขีดฆ่าคือคิวเต็มแล้ว</p>`}
  if(st.time){h+=`<h3 class="sec">ข้อมูลของคุณ</h3><div class="card"><label for="nm">ชื่อเล่น</label><input type="text" id="nm" data-f="name" value="${esc(st.name||st.me?.displayName||"")}"><label for="ph">เบอร์โทร</label><input type="tel" id="ph" data-f="phone" value="${esc(st.phone)}"><label>รูปตัวอย่างที่อยากได้ (ไม่บังคับ)</label><div class="up">${st.img?`<img src="${st.img}" alt="รูปตัวอย่าง">`:""}<input type="file" accept="image/*" data-f="img" aria-label="แนบรูปตัวอย่าง"></div></div>
@@ -132,7 +164,7 @@ function vPts(){
  let h=`<h2 style="margin-bottom:12px">แต้มของฉัน</h2><div class="card"><label for="lp" style="margin-top:0">เบอร์โทรที่ใช้จอง</label><input type="tel" id="lp" data-f="phone" value="${esc(st.phone)}"><button class="btn full" data-a="lookup">ดูแต้มและประวัติ</button></div>`;
  if(st.mine){const d=st.mine.filter(b=>b.status==="done"),pts=d.length*10,f=Math.min(pts,50);
   h+=`<div class="card"><h3>${pts} แต้ม</h3><div class="stamps">${[...Array(5)].map((_,i)=>`<i class="${f>=(i+1)*10?"f":""}"></i>`).join("")}</div><p class="mute">ครบ 50 แต้ม แลกส่วนลด 100 บาท · ชวนเพื่อนใช้โค้ด GLOW-${esc(st.phone.slice(-4))} ลดทั้งคู่ 50 บาท</p></div><div class="card"><h3 style="margin-bottom:6px">ประวัติการจอง</h3>`;
-  h+=st.mine.length?st.mine.slice().reverse().map(b=>`<div class="row"><span>${esc(b.services)}<br><span class="mute">${esc(b.date)} ${esc(b.time)} · ${esc(b.staff)}</span></span><span class="tag ${b.status}">${stLbl[b.status]||""}</span></div>`).join(""):`<p class="mute">ยังไม่พบการจองจากเบอร์นี้</p>`;h+=`</div>`}
+  h+=st.mine.length?st.mine.slice().reverse().map(b=>`<div class="row"><span>${esc(b.services)}<br><span class="mute">${esc(thd(b.date))} ${esc(b.time)} น. · ${esc(b.staff)}</span></span><span class="tag ${b.status}">${stLbl[b.status]||""}</span></div>`).join(""):`<p class="mute">ยังไม่พบการจองจากเบอร์นี้</p>`;h+=`</div>`}
  return h}
 /* ===== เจ้าของร้าน (CRM) ===== */
 function groupC(){const m={};(st.admin.bookings||[]).forEach(b=>{const c=m[b.phone]||(m[b.phone]={phone:b.phone,name:b.name,list:[],visits:0,spend:0,last:"",next:null});c.list.push(b);if(b.status==="done"){c.visits++;c.spend+=Number(b.price);if(b.date>c.last)c.last=b.date}const t=b.date+b.time;if(b.status==="booked"&&(!c.next||t<c.next.date+c.next.time))c.next=b});return Object.values(m).sort((a,b)=>(b.last||"").localeCompare(a.last||""))}
@@ -150,8 +182,8 @@ function vShop(){
  if(c){const[t,k]=tagOf(c.visits,c.spend),note=st.admin.notes?.[c.phone]||"";
   h+=`<div class="card"><div class="top"><div class="av" style="width:56px;height:56px">${initial(c.name)}</div><div><h3>${esc(c.name)} <span class="tag ${k}">${t}</span></h3><p class="mute">${esc(c.phone)}</p></div></div>
   <div class="stats"><div class="stat"><b>${c.visits}</b>มาใช้บริการ</div><div class="stat"><b>฿${money(c.spend)}</b>ยอดใช้จ่าย</div><div class="stat"><b>${c.visits*10}</b>แต้ม</div></div>
-  <div class="next"><span class="mute">นัดถัดไป</span><br><b>${c.next?`${esc(c.next.date)} ${esc(c.next.time)} · ${esc(c.next.services)}`:"ยังไม่มีนัด"}</b></div>
-  ${c.list.slice().reverse().slice(0,5).map(b=>`<div class="row"><span>${esc(b.services)}<br><span class="mute">${esc(b.date)} · ${esc(b.staff)}</span></span><span class="tag ${b.status}">${stLbl[b.status]}</span></div>`).join("")}
+  <div class="next"><span class="mute">นัดถัดไป</span><br><b>${c.next?`${esc(thd(c.next.date))} เวลา ${esc(c.next.time)} น. · ${esc(c.next.services)}`:"ยังไม่มีนัด"}</b></div>
+  ${c.list.slice().reverse().slice(0,5).map(b=>`<div class="row"><span>${esc(b.services)}<br><span class="mute">${esc(thd(b.date))} · ${esc(b.staff)}</span></span><span class="tag ${b.status}">${stLbl[b.status]}</span></div>`).join("")}
   <label for="nt">โน้ตสำหรับทีม (เฉดสี ทรงเล็บ อาการแพ้ ช่างคนโปรด)</label><textarea id="nt" rows="3" data-f="note">${esc(note)}</textarea><button class="btn full" data-a="note">บันทึกโน้ต</button></div>`}
  else h+=`<div class="card"><p class="mute">เลือกลูกค้าทางซ้ายเพื่อดูโปรไฟล์</p></div>`;
  return h+`</div></div>`}
