@@ -120,7 +120,17 @@ const st={tab:"book",cat:"nail",cart:[],view:"list",me:null,staff:null,date:null
 async function api(body,get){
  if(!CFG.API)return mock(body,get);
  const r=get?await fetch(CFG.API+"?"+new URLSearchParams(get)):await fetch(CFG.API,{method:"POST",body:JSON.stringify(body)});
- return r.json()}
+ return fixAll(await r.json())}
+/* แก้วันที่/เวลา/เบอร์ ที่ Google Sheets แปลงเอง ให้เป็นเวลาไทย */
+const MON={Jan:1,Feb:2,Mar:3,Apr:4,May:5,Jun:6,Jul:7,Aug:8,Sep:9,Oct:10,Nov:11,Dec:12};
+function fixB(b){if(!b||typeof b!=="object")return b;
+ let m=String(b.date||"").match(/^\w{3} (\w{3}) (\d{1,2}) (\d{4})/);if(m)b.date=`${m[3]}-${String(MON[m[1]]).padStart(2,"0")}-${m[2].padStart(2,"0")}`;
+ else{m=String(b.date||"").match(/^(\d{4}-\d\d-\d\d)T/);if(m){const d=new Date(b.date);if(!isNaN(d))b.date=iso(d)}}
+ m=String(b.time||"").match(/(\d{1,2}):(\d\d)(:\d\d)?/);if(m&&String(b.time).length>5)b.time=m[1].padStart(2,"0")+":"+m[2];
+ if(/^[1-9]\d{8}$/.test(String(b.phone||"")))b.phone="0"+b.phone;return b}
+function fixAll(o){if(o&&Array.isArray(o.bookings))o.bookings.forEach(fixB);
+ if(o&&Array.isArray(o.busy))o.busy=o.busy.map(x=>{const[s,t]=String(x).split("|");return s+"|"+fixB({time:t}).time});
+ if(o&&o.notes){for(const k in o.notes)if(/^[1-9]\d{8}$/.test(k))o.notes["0"+k]=o.notes[k]}return o}
 function mock(b,g){
  const L=ls.get("gq_mock",[]);
  if(g?.action==="busy")return{busy:L.filter(r=>r.date===g.date&&r.status!=="noshow").map(r=>r.staff+"|"+r.time)};
@@ -156,7 +166,7 @@ function vCo(){
  if(st.time){h+=`<h3 class="sec">ข้อมูลของคุณ</h3><div class="card"><label for="nm">ชื่อเล่น</label><input type="text" id="nm" data-f="name" value="${esc(st.name||st.me?.displayName||"")}"><label for="ph">เบอร์โทร</label><input type="tel" id="ph" data-f="phone" value="${esc(st.phone)}"><label>รูปตัวอย่างที่อยากได้ (ไม่บังคับ)</label><div class="up">${st.img?`<img src="${st.img}" alt="รูปตัวอย่าง">`:""}<input type="file" accept="image/*" data-f="img" aria-label="แนบรูปตัวอย่าง"></div></div>
   <div class="card"><h3>มัดจำ ${CFG.DEPOSIT} บาท</h3><p class="mute">${CFG.PROMPTPAY?`โอนพร้อมเพย์ <b>${esc(CFG.PROMPTPAY)}</b> แล้วส่งสลิปในแชท LINE ร้าน`:"โอนมัดจำตามที่ร้านแจ้ง แล้วส่งสลิปในแชท LINE ร้าน"} ร้านจะยืนยันคิวให้หลังตรวจสลิป</p></div>${st.err?`<p role="alert" style="color:var(--warn)">${esc(st.err)}</p>`:""}<button class="btn full" data-a="submit">ยืนยันการจองคิว</button>`}
  return h}
-function vOk(){const b=st.done;return`<div class="card ok"><p class="mute">จองคิวสำเร็จ</p><p class="big num">${esc(b.services)}</p><p>${esc(b.staff)} · ${b.date} เวลา ${b.time}</p><p class="mute" style="margin-top:10px">${st.me?"ร้านจะเตือนคิวทาง LINE ก่อนนัด 1 วันและ 2 ชั่วโมง":"เข้าสู่ระบบ LINE ครั้งหน้าเพื่อรับการแจ้งเตือนคิว"}</p>${CFG.OA_URL?`<a class="btn line full" style="display:block;text-decoration:none" href="${esc(CFG.OA_URL)}" target="_blank" rel="noopener">เปิดแชท LINE ร้าน ส่งสลิปมัดจำ</a>`:""}<button class="btn ghost full" data-a="again">จองคิวเพิ่ม</button></div>`}
+function vOk(){const b=st.done;return`<div class="card ok"><p class="mute">จองคิวสำเร็จ</p><p class="big num">${esc(b.services)}</p><p>${esc(b.staff)} · ${thd(b.date)} เวลา ${b.time} น.</p><p class="mute" style="margin-top:10px">${st.me?"ร้านจะเตือนคิวทาง LINE ก่อนนัด 1 วันและ 2 ชั่วโมง":"เข้าสู่ระบบ LINE ครั้งหน้าเพื่อรับการแจ้งเตือนคิว"}</p>${CFG.OA_URL?`<a class="btn line full" style="display:block;text-decoration:none" href="${esc(CFG.OA_URL)}" target="_blank" rel="noopener">เปิดแชท LINE ร้าน ส่งสลิปมัดจำ</a>`:""}<button class="btn ghost full" data-a="again">จองคิวเพิ่ม</button></div>`}
 /* ===== แต้มของฉัน ===== */
 const tagOf=(v,s)=>v>=5||s>=3000?["VIP","vip"]:v>=2?["สมาชิก",""]:["ใหม่","new"];
 const stLbl={booked:"รอรับบริการ",done:"เสร็จแล้ว",noshow:"ไม่มา"};
@@ -169,7 +179,7 @@ function vPts(){
 /* ===== เจ้าของร้าน (CRM) ===== */
 function groupC(){const m={};(st.admin.bookings||[]).forEach(b=>{const c=m[b.phone]||(m[b.phone]={phone:b.phone,name:b.name,list:[],visits:0,spend:0,last:"",next:null});c.list.push(b);if(b.status==="done"){c.visits++;c.spend+=Number(b.price);if(b.date>c.last)c.last=b.date}const t=b.date+b.time;if(b.status==="booked"&&(!c.next||t<c.next.date+c.next.time))c.next=b});return Object.values(m).sort((a,b)=>(b.last||"").localeCompare(a.last||""))}
 function vShopLogin(){return`<div class="card"><h2 style="margin-bottom:8px">สำหรับเจ้าของร้าน</h2><label for="pin" style="margin-top:0">รหัสเจ้าของร้าน</label><input type="password" id="pin" data-f="pin" value="${esc(st.pin)}" autocomplete="off"><button class="btn full" data-a="pinGo">เข้าสู่หน้าร้าน</button>${st.err?`<p role="alert" style="color:var(--warn);margin-top:8px">${esc(st.err)}</p>`:""}</div>`}
-function clist(){const q=st.q.toLowerCase();return groupC().filter(c=>!q||c.name.toLowerCase().includes(q)).map(c=>{const[t,k]=tagOf(c.visits,c.spend);return`<button class="cl ${st.sel===c.phone?"on":""}" data-a="sel" data-v="${esc(c.phone)}"><div class="av">${initial(c.name)}</div><div><b>${esc(c.name)}</b><br><span class="mute">${c.last?"มาล่าสุด: "+c.last:"ยังไม่เคยมาใช้บริการ"}</span></div><span class="tag ${k}">${t}</span></button>`}).join("")||`<p class="mute">ยังไม่มีลูกค้า</p>`}
+function clist(){const q=st.q.toLowerCase();return groupC().filter(c=>!q||c.name.toLowerCase().includes(q)).map(c=>{const[t,k]=tagOf(c.visits,c.spend);return`<button class="cl ${st.sel===c.phone?"on":""}" data-a="sel" data-v="${esc(c.phone)}"><div class="av">${initial(c.name)}</div><div><b>${esc(c.name)}</b><br><span class="mute">${c.last?"มาล่าสุด: "+thd(c.last):"ยังไม่เคยมาใช้บริการ"}</span></div><span class="tag ${k}">${t}</span></button>`}).join("")||`<p class="mute">ยังไม่มีลูกค้า</p>`}
 function vShop(){
  if(!st.admin)return vShopLogin();
  const B=st.admin.bookings,today=iso(new Date()),tq=B.filter(b=>b.date===today).sort((a,b)=>a.time.localeCompare(b.time)),
